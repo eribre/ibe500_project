@@ -7,11 +7,11 @@ html
 	p Please enter required values in all fields before hitting "Submit"
 
 	form(action="/view/finTx", method="post") 
-		label(for="address") Your address
+		label(for="address") Your public address
 		<br/>
 		input(type="text" name="address" size="50" required)
 		<br/>
-		label(for="utxoPWif") Your private key in Wif-Format (Ensure HTTPS if done over internet) 
+		label(for="utxoPWif") Your private key in Wif-Format
 		<br/>
 		input(type="text" name="utxoPWif" size="64" required)
 		<br/>
@@ -19,9 +19,9 @@ html
 		<br/>
 		input(type="text" name="changeAddr" size="50" required)
 		<br/>
-		label(for="msg") Your message/data to send 
-		<br/>
-		textarea(name="msg", cols="30", rows="10" required) 
-		<br/>
+		label(for="msg") Your message/data to send
+		<br />
+		textarea(name="msg", cols="30", rows="10" required)
+		<br />
 		input(type="submit", value="Create new transaction")
 

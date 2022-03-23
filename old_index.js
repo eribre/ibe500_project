@@ -7,7 +7,7 @@ const path = require("path");
 const app = express();
 const port = 3000;
 
-const newTx = require("./scripts/autoNewTx");
+const newTx = require("./scripts/newTx");
 
 const routes = require("./routes");
 
@@ -35,10 +35,21 @@ app.get("/", (req, res) => {
 TODO: sanetize user input
 */
 app.post("/view/finTx", (req, res) => {
-	const { address, utxoPWif, changeAddr, msg } = req.body;
+	const {
+		address,
+		utxoTxid,
+		utxoValue,
+		utxoIndex,
+		utxoPWif,
+		changeAddr,
+		msg,
+	} = req.body;
 	// console.log(utxoIndex);
 	const output = newTx(
 		address, // utxoFrom
+		Number(utxoValue), // utxoValue
+		Number(utxoIndex), // utxoIndex
+		utxoTxid, // utxoTxid
 		utxoPWif, // utxoPrivatekeyWif
 		changeAddr, // changeAddr
 		[msg] // msgToWrite

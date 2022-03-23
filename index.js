@@ -7,7 +7,7 @@ const path = require("path");
 const app = express();
 const port = 3000;
 
-const newTx = require("./scripts/newTx");
+const autoNewTx = require("./scripts/autoNewTxModule");
 
 const routes = require("./routes");
 
@@ -34,28 +34,22 @@ app.get("/", (req, res) => {
 * creates new transaction with user input from newTx.pug
 TODO: sanetize user input
 */
-app.post("/view/finTx", (req, res) => {
-	const {
-		address,
-		utxoTxid,
-		utxoValue,
-		utxoIndex,
-		utxoPWif,
-		changeAddr,
-		msg,
-	} = req.body;
+app.post("/view/finTx", async (req, res) => {
+	const { address, utxoPWif, changeAddr, msg } = req.body;
 	// console.log(utxoIndex);
-	const output = newTx(
-		address, // utxoFrom
-		Number(utxoValue), // utxoValue
-		Number(utxoIndex), // utxoIndex
-		utxoTxid, // utxoTxid
-		utxoPWif, // utxoPrivatekeyWif
-		changeAddr, // changeAddr
-		[msg] // msgToWrite
-	);
-	res.render("finTx", { output });
-	res.end();
+	try {
+		const output = await autoNewTx(
+			address, // utxoFrom
+			utxoPWif, // utxoPrivatekeyWif
+			changeAddr, // changeAddr
+			[msg] // msgToWrite
+		);
+		res.render("finTx", { output });
+		res.end();
+	} catch (err) {
+		console.log(err);
+		res.render("oops");
+	}
 });
 
 app.listen(port, () => {

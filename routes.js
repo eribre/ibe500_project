@@ -2,8 +2,10 @@ const express = require("express");
 
 const router = express.Router();
 
-router.get("/views/newTx", (req, res) => {
-	res.render("newTx", { title: "New Transaction" });
+router.get("/favicon.ico", (req, res) => res.status(204));
+
+router.get("/views/autoNewTx", (req, res) => {
+	res.render("autoNewTx", { title: "New Transaction" });
 });
 
 router.get("/views/viewTx", (req, res) => {

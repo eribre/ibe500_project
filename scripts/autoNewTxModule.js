@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable consistent-return */
 
-function autoNewTx(utxoFrom, utxoPrivkeyWif, changeAddr, msgToWrite) {
+async function autoNewTx(utxoFrom, utxoPrivkeyWif, changeAddr, msgToWrite) {
 	// eslint-disable-next-line global-require
 	const WhatsApi = require("whatsonchain/index");
 
@@ -15,8 +15,6 @@ function autoNewTx(utxoFrom, utxoPrivkeyWif, changeAddr, msgToWrite) {
 		Script,
 		// eslint-disable-next-line global-require
 	} = require("bsv");
-
-	console.log("Executing on the", process.env.NETWORK);
 
 	// Parameters needed for TxBuilder and filling them with the spending output/UTXO values from previous transaction.
 	// To get the values below for a given UTXO see whatsonchain
@@ -84,19 +82,22 @@ function autoNewTx(utxoFrom, utxoPrivkeyWif, changeAddr, msgToWrite) {
 
 		const signedTx = builder.tx.toHex();
 
-		console.log(signedTx); // Signed tx
+		// console.log(signedTx); // Signed tx
 
 		const result = woc.broadcast(signedTx); // Here we broadcast the new built raw transaction!
 
 		return result;
 	}
 
-	const pubAddr = utxoFrom;
-	accessChain(pubAddr).then((result) =>
-		broadcastTx(result).then((txReturn) => console.log(txReturn))
-	);
+	async function txid(pubAddr) {
+		const output = await accessChain(pubAddr).then((result) =>
+			broadcastTx(result).then((txReturn) => txReturn)
+		);
+		return output;
+	}
 
-	// Returns the newly created and broadcasted txid
+	const outputToWeb = await txid(utxoFrom); // returns txid to the website
+	return outputToWeb;
 }
 
 module.exports = autoNewTx;
