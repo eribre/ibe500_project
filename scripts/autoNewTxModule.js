@@ -99,5 +99,7 @@ async function autoNewTx(utxoFrom, utxoPrivkeyWif, changeAddr, msgToWrite) {
 	const outputToWeb = await txid(utxoFrom); // returns txid to the website
 	return outputToWeb;
 }
+// * I'm aware there are alot of async/await above, it's a temp fix.
+// TODO: Go back to the above section to clean up code.
 
 module.exports = autoNewTx;
