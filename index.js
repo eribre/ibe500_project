@@ -7,7 +7,7 @@ const path = require("path");
 const app = express();
 const port = 3000;
 
-const autoNewTx = require("./scripts/autoNewTxModule");
+const autoNewTx = require("./scripts/autoNewTxModuleV2");
 
 const routes = require("./routes");
 
@@ -35,13 +35,12 @@ app.get("/", (req, res) => {
 TODO: sanetize user input
 */
 app.post("/view/finTx", async (req, res) => {
-	const { address, utxoPWif, changeAddr, msg } = req.body;
+	const { address, utxoPWif, msg } = req.body;
 	// console.log(utxoIndex);
 	try {
 		const output = await autoNewTx(
 			address, // utxoFrom
 			utxoPWif, // utxoPrivatekeyWif
-			changeAddr, // changeAddr
 			[msg] // msgToWrite
 		);
 		res.render("finTx", { output });
