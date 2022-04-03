@@ -8,6 +8,7 @@ const app = express();
 const port = 3000;
 
 const autoNewTx = require("./scripts/autoNewTxModuleV2");
+const getTx = require("./scripts/getTx");
 
 const routes = require("./routes");
 
@@ -51,6 +52,19 @@ app.post("/view/finTx", async (req, res) => {
 	}
 });
 
+app.post("/view/outData", async (req, res) => {
+	const { transaction } = req.body;
+	// console.log(utxoIndex);
+	try {
+		const outputData = await getTx(transaction);
+		res.render("outData", { outputData });
+		res.end();
+	} catch (err) {
+		console.log(err);
+		res.render("oops");
+	}
+});
+
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+	console.log(`App listening on port ${port}`);
 });
