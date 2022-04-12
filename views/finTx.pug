@@ -3,5 +3,9 @@ html
 	head 
 		title View Transaction
 	body 
-		h1 Hopefully this works.
-		p=output
+		h1 Transaction ID:
+		a(href=`https://test.whatsonchain.com/tx/${output}`) #{output}
+		p 
+			| Do keep in mind that refreshing this page <br/>
+			| will resubmitt the data and <br />
+			| create a duplicate transaction!

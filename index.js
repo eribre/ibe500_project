@@ -3,6 +3,7 @@ process.env.NETWORK = "testnet";
 
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 const port = 3000;
@@ -35,15 +36,22 @@ app.get("/", (req, res) => {
 * creates new transaction with user input from newTx.pug
 TODO: sanetize user input
 */
-app.post("/view/finTx", async (req, res) => {
+app.post("/views/finTx", async (req, res) => {
 	const { address, utxoPWif, msg } = req.body;
 	// console.log(utxoIndex);
 	try {
+		const msgTrim = msg.trim();
 		const output = await autoNewTx(
 			address, // utxoFrom
 			utxoPWif, // utxoPrivatekeyWif
-			[msg] // msgToWrite
+			[msgTrim] // msgToWrite
 		);
+		// Ignore for now
+		fs.appendFileSync("./data/txId.log", output, (err) => {
+			if (err) {
+				console.error(err);
+			}
+		});
 		res.render("finTx", { output });
 		res.end();
 	} catch (err) {
@@ -52,11 +60,22 @@ app.post("/view/finTx", async (req, res) => {
 	}
 });
 
-app.post("/view/outData", async (req, res) => {
+app.use("/views/viewHistory", async (req, res) => {
+	// eslint-disable-next-line consistent-return
+	fs.readFile("./data/txId.log", "utf-8", async (err, data) => {
+		if (err) throw err;
+		res.send(data);
+	});
+});
+
+app.post("/views/outData", async (req, res) => {
 	const { transaction } = req.body;
 	// console.log(utxoIndex);
 	try {
-		const outputData = await getTx(transaction);
+		let outputData = await getTx(transaction);
+		// outputData = outputData.substring(1);
+		outputData = JSON.stringify(outputData);
+		console.log(outputData);
 		res.render("outData", { outputData });
 		res.end();
 	} catch (err) {
