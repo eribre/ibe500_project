@@ -4,6 +4,8 @@ html
 		title View Tx History
 	body 
 		h1 View Transaction History 
-
+		
 		each item in array 
-			p= item
+			a(href= "https://test.whatsonchain.com/tx/" + item) #{item}
+			<br />
+			<br />

@@ -47,7 +47,7 @@ app.post("/views/finTx", async (req, res) => {
 			[msgTrim] // msgToWrite
 		);
 		// Ignore for now
-		fs.appendFileSync("./data/txId.log", output, (err) => {
+		fs.appendFileSync("./data/txId.log", `${output}\n`, (err) => {
 			if (err) {
 				console.error(err);
 			}
