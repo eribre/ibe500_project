@@ -60,12 +60,19 @@ app.post("/views/finTx", async (req, res) => {
 	}
 });
 
+/*
 app.use("/views/viewHistory", async (req, res) => {
 	// eslint-disable-next-line consistent-return
 	fs.readFile("./data/txId.log", "utf-8", async (err, data) => {
 		if (err) throw err;
 		res.send(data);
 	});
+});
+*/
+
+app.get("/views/viewHistory", async (req, res) => {
+	const array = fs.readFileSync("./data/txId.log", "utf-8").split("\n");
+	res.render("viewHistory", { array });
 });
 
 app.post("/views/outData", async (req, res) => {
