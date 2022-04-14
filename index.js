@@ -81,7 +81,7 @@ app.post("/views/outData", async (req, res) => {
 	try {
 		let outputData = await getTx(transaction);
 		outputData = outputData.substring(1);
-		outputData = JSON.stringify(outputData);
+		// outputData = JSON.stringify(outputData);
 		console.log(outputData);
 		res.render("outData", { outputData });
 		res.end();
