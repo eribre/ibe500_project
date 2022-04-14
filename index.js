@@ -8,7 +8,9 @@ const fs = require("fs");
 const app = express();
 const port = 3000;
 
+// function for broadcasting new transactions
 const autoNewTx = require("./scripts/autoNewTxModuleV2");
+// function for retrieving data uploaded to the blockchain
 const getTx = require("./scripts/getTx");
 
 const routes = require("./routes");
@@ -38,7 +40,6 @@ TODO: sanetize user input
 */
 app.post("/views/finTx", async (req, res) => {
 	const { address, utxoPWif, msg } = req.body;
-	// console.log(utxoIndex);
 	try {
 		const msgTrim = msg.trim();
 		const output = await autoNewTx(
@@ -46,7 +47,7 @@ app.post("/views/finTx", async (req, res) => {
 			utxoPWif, // utxoPrivatekeyWif
 			[msgTrim] // msgToWrite
 		);
-		// Ignore for now
+		// writes txId to log file for later use
 		fs.appendFileSync("./data/txId.log", `${output}\n`, (err) => {
 			if (err) {
 				console.error(err);
@@ -60,7 +61,7 @@ app.post("/views/finTx", async (req, res) => {
 	}
 });
 
-/*
+/* OLD CODE
 app.use("/views/viewHistory", async (req, res) => {
 	// eslint-disable-next-line consistent-return
 	fs.readFile("./data/txId.log", "utf-8", async (err, data) => {
@@ -77,10 +78,9 @@ app.get("/views/viewHistory", async (req, res) => {
 
 app.post("/views/outData", async (req, res) => {
 	const { transaction } = req.body;
-	// console.log(utxoIndex);
 	try {
 		let outputData = await getTx(transaction);
-		// outputData = outputData.substring(1);
+		outputData = outputData.substring(1);
 		outputData = JSON.stringify(outputData);
 		console.log(outputData);
 		res.render("outData", { outputData });
