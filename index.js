@@ -126,6 +126,32 @@ app.get("/views/sumData", async (req, res) => {
 			res.write("</tr>");
 		}
 		res.write("</table>");
+		res.write("<h2> Summary </h2>");
+		for (let j = 0; j < rawData.length; j += 1) {
+			// eslint-disable-next-line no-await-in-loop
+			let outCsv = await getTx(rawData[j]);
+			outCsv = outCsv.substring(1);
+			const oLst = outCsv.split(",");
+			// if an amount was cought write to page
+			if (oLst[2] > 0) {
+				res.write(`${oLst[0]} has caught ${oLst[2]} kg of fish`);
+				res.write("<br/>");
+			}
+			// if an amount was bought write to page
+			if (oLst[3] > 0) {
+				res.write(
+					`${oLst[0]} has bought ${oLst[3]} kg of fish from ${oLst[1]}`
+				);
+				res.write("<br/>");
+			}
+			// if an amount was sold write to page
+			if (oLst[4] > 0) {
+				res.write(
+					`${oLst[0]} has sold ${oLst[4]} kg of fish to ${oLst[5]}`
+				);
+				res.write("<br/>");
+			}
+		}
 		res.end();
 	} catch (err) {
 		res.render("oops");
