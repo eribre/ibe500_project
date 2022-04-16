@@ -32,6 +32,7 @@ app.use(
 // renders main page
 app.get("/", (req, res) => {
 	res.render("index");
+	res.end();
 });
 
 /*
@@ -58,6 +59,7 @@ app.post("/views/finTx", async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.render("oops");
+		res.end();
 	}
 });
 
@@ -74,20 +76,60 @@ app.use("/views/viewHistory", async (req, res) => {
 app.get("/views/viewHistory", async (req, res) => {
 	const array = fs.readFileSync("./data/txId.log", "utf-8").split("\n");
 	res.render("viewHistory", { array });
+	res.end();
 });
 
+// TODO Create some logic for viewing data
 app.post("/views/outData", async (req, res) => {
 	const { transaction } = req.body;
+	// transaction = transaction.trim();
 	try {
-		let outputData = await getTx(transaction);
+		let outputData = await getTx(transaction.trim());
 		outputData = outputData.substring(1);
 		// outputData = JSON.stringify(outputData);
 		console.log(outputData);
-		res.render("outData", { outputData });
-		res.end();
+		const outputList = outputData.split(",");
+		console.log(outputList.length);
+
+		if (outputList.length !== 6) {
+			res.render("oops");
+		} else {
+			res.render("outData", { outputList });
+			res.end();
+		}
 	} catch (err) {
 		console.log(err);
 		res.render("oops");
+		res.end();
+	}
+});
+
+app.get("/views/sumData", async (req, res) => {
+	try {
+		const rawData = fs.readFileSync("./data/txId.log", "utf-8").split("\n");
+		rawData.pop();
+		console.log(rawData.length);
+		res.setHeader("Content-Type", "text/html");
+		res.write(
+			"<table><tr><th>Firm</th><th>Supplier</th><th>Nr. Caught</th><th>Nr. Bought</th><th>Nr. Sold</th><th>Buyer</th></tr>"
+		);
+
+		for (let i = 0; i < rawData.length; i += 1) {
+			// eslint-disable-next-line no-await-in-loop
+			let outCsv = await getTx(rawData[i]);
+			outCsv = outCsv.substring(1);
+			const oLst = outCsv.split(",");
+			res.write("<tr>");
+			res.write(
+				`<td>${oLst[0]}</td><td>${oLst[1]}</td><td>${oLst[2]}</td><td>${oLst[3]}</td><td>${oLst[4]}</td><td>${oLst[5]}</td>`
+			);
+			res.write("</tr>");
+		}
+		res.write("</table>");
+		res.end();
+	} catch (err) {
+		res.render("oops");
+		res.end();
 	}
 });
 
