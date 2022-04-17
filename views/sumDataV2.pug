@@ -31,17 +31,16 @@ html
 		h2 Stats:
 
 		each val in arr
-			//- let sum = 0;
+			
 			if val.caught > 0
 				p #{val.firm} has caught #{val.caught} kg of fish.
-				//- sum = sum + val.cought;
+			
 			if val.bought > 0
 				p #{val.firm} has bought #{val.bought} kg of fish from #{val.supplier}.
-				//- sum = sum + val.bought;
+			
 			if val.sold > 0
 				p #{val.firm} has sold #{val.sold} kg of fish to #{val.buyer}.
-				//- sum = sum - val.sold;
-			//p #{val.firm} has #{sum} kg of fish left.
+			
 
 		h2 Summary:
 		
