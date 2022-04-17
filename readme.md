@@ -2,6 +2,8 @@
 
 #### MAKE SURE THAT DEPENDENCIES ARE INSTALLED!!
 
+Node_modules is included, but it doesn't hurt to double check.
+
 This project requires bsv, whatsonchain, expressjs and pug (for html templates) to function.
 
 To start the server, run "node index.js" with this folder as the working directory.  
