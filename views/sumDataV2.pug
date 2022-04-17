@@ -1,0 +1,43 @@
+doctype html 
+html 
+	head 
+		title View Data in transaction
+		style. 
+			table, th, td {
+				border: 1px solid black;}
+			table {
+				width:50%
+			}
+	body 
+		h1 Data stored in transaction:
+
+		table()
+			tr
+				th Firm 
+				th Supplier 
+				th Nr. Caught 
+				th Nr. Bought  
+				th Nr. Sold 
+				th Buyer 
+			each val in arr
+				tr 
+					td= val.firm 
+					td= val.supplier 
+					td= val.caught 
+					td= val.bought 
+					td= val.sold 
+					td= val.buyer
+		- let num = 0
+		while num < arr.length
+			- let sum = 0;
+			if arr[num].caught > 0
+				p #{arr[num].firm} has caught #{arr[num].caught} kg of fish.
+				- sum = sum + arr[num].cought;
+			if arr[num].bought > 0
+				p #{arr[num].firm} has bought #{arr[num].bought} kg of fish from #{arr[num].supplier}.
+				- sum = sum + arr[num].bought;
+			if arr[num].sold > 0
+				p #{arr[num].firm} has sold #{arr[num].sold} kg of fish to #{arr[num].buyer}.
+				- sum = sum - arr[num].sold;
+			p #{arr[num].firm} has #{sum} kg of fish left.
+			- num++

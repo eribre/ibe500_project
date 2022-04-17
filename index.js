@@ -164,13 +164,13 @@ app.get("/views/sumDataV2", async (req, res) => {
 	rawData.pop();
 	console.log(rawData.length);
 
-	const arrJSON = [];
+	const arr = {};
 	for (let i = 0; i < rawData.length; i += 1) {
 		// eslint-disable-next-line no-await-in-loop
 		let outCsv = await getTx(rawData[i]);
 		outCsv = outCsv.substring(1);
 		const oLst = outCsv.split(",");
-		arrJSON[i] = {
+		arr[i] = {
 			firm: oLst[0],
 			supplier: oLst[1],
 			caught: oLst[2],
@@ -179,12 +179,12 @@ app.get("/views/sumDataV2", async (req, res) => {
 			buyer: oLst[5],
 		};
 	}
-	let jsonString = JSON.stringify(arrJSON);
-	jsonString = jsonString.replaceAll('\\"', "");
+	// let jsonString = JSON.stringify(arr);
+	// arr.replaceAll('\\"', "");
 	// eslint-disable-next-line no-useless-escape
-	console.log(JSON.parse(jsonString));
-	fs.writeFileSync("./data/opReturn.json", jsonString);
-	res.write("It Might Have Worked!");
+	// console.log(arr[4].firm);
+	// fs.writeFileSync("./data/opReturn.json", jsonString);
+	res.render("sumDataV2", { arr });
 	res.end();
 });
 
