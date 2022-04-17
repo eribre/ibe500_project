@@ -63,23 +63,14 @@ app.post("/views/finTx", async (req, res) => {
 	}
 });
 
-/* OLD CODE
-app.use("/views/viewHistory", async (req, res) => {
-	// eslint-disable-next-line consistent-return
-	fs.readFile("./data/txId.log", "utf-8", async (err, data) => {
-		if (err) throw err;
-		res.send(data);
-	});
-});
-*/
-
+// Displays history of transactions store in log file
 app.get("/views/viewHistory", async (req, res) => {
 	const array = fs.readFileSync("./data/txId.log", "utf-8").split("\n");
 	res.render("viewHistory", { array });
 	res.end();
 });
 
-// TODO Create some logic for viewing data
+// Old way of viewing data. Only displays single transaction.
 app.post("/views/outData", async (req, res) => {
 	const { transaction } = req.body;
 	// transaction = transaction.trim();
@@ -104,6 +95,8 @@ app.post("/views/outData", async (req, res) => {
 	}
 });
 
+// Original solution to viewing all data from op_return
+// TODO check that op_return is in supporting format
 app.get("/views/sumData", async (req, res) => {
 	try {
 		const rawData = fs.readFileSync("./data/txId.log", "utf-8").split("\n");
@@ -159,6 +152,8 @@ app.get("/views/sumData", async (req, res) => {
 	}
 });
 
+// Slightly better solution to viewing all data from op_return
+// TODO check that op_return is in supporting format
 app.get("/views/sumDataV2", async (req, res) => {
 	const rawData = fs.readFileSync("./data/txId.log", "utf-8").split("\n");
 	rawData.pop();
@@ -179,11 +174,6 @@ app.get("/views/sumDataV2", async (req, res) => {
 			buyer: oLst[5],
 		};
 	}
-	// let jsonString = JSON.stringify(arr);
-	// arr.replaceAll('\\"', "");
-	// eslint-disable-next-line no-useless-escape
-	// console.log(arr[4].firm);
-	// fs.writeFileSync("./data/opReturn.json", jsonString);
 	res.render("sumDataV2", { arr });
 	res.end();
 });
