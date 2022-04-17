@@ -159,6 +159,35 @@ app.get("/views/sumData", async (req, res) => {
 	}
 });
 
+app.get("/views/sumDataV2", async (req, res) => {
+	const rawData = fs.readFileSync("./data/txId.log", "utf-8").split("\n");
+	rawData.pop();
+	console.log(rawData.length);
+
+	const arrJSON = [];
+	for (let i = 0; i < rawData.length; i += 1) {
+		// eslint-disable-next-line no-await-in-loop
+		let outCsv = await getTx(rawData[i]);
+		outCsv = outCsv.substring(1);
+		const oLst = outCsv.split(",");
+		arrJSON[i] = {
+			firm: oLst[0],
+			supplier: oLst[1],
+			caught: oLst[2],
+			bought: oLst[3],
+			sold: oLst[4],
+			buyer: oLst[5],
+		};
+	}
+	let jsonString = JSON.stringify(arrJSON);
+	jsonString = jsonString.replaceAll('\\"', "");
+	// eslint-disable-next-line no-useless-escape
+	console.log(JSON.parse(jsonString));
+	fs.writeFileSync("./data/opReturn.json", jsonString);
+	res.write("It Might Have Worked!");
+	res.end();
+});
+
 app.listen(port, () => {
 	console.log(`App listening on port ${port}`);
 });
