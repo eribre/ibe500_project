@@ -17,6 +17,6 @@ tool for creating new transactions.
 
 **The tool for viewing transactions** only displays a single op_return at a time, but you have full control of the tx_id.
 
-**Tool for viewing sum of previous transactions** is the older and not fully functional sollution to the requirements given by the task.
+**Tool for viewing sum of previous transactions** is the older and not fully functional solution to the requirements given by the task.
 
 **Tool for viewing sum of previous transactions V2** is the slightly better solution, that for now relies on hardcoded firm names (to be changed).
