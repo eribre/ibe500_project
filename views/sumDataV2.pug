@@ -27,17 +27,40 @@ html
 					td= val.bought 
 					td= val.sold 
 					td= val.buyer
-		- let num = 0
-		while num < arr.length
-			- let sum = 0;
-			if arr[num].caught > 0
-				p #{arr[num].firm} has caught #{arr[num].caught} kg of fish.
-				- sum = sum + arr[num].cought;
-			if arr[num].bought > 0
-				p #{arr[num].firm} has bought #{arr[num].bought} kg of fish from #{arr[num].supplier}.
-				- sum = sum + arr[num].bought;
-			if arr[num].sold > 0
-				p #{arr[num].firm} has sold #{arr[num].sold} kg of fish to #{arr[num].buyer}.
-				- sum = sum - arr[num].sold;
-			p #{arr[num].firm} has #{sum} kg of fish left.
-			- num++
+		
+		h2 Stats:
+
+		each val in arr
+			//- let sum = 0;
+			if val.caught > 0
+				p #{val.firm} has caught #{val.caught} kg of fish.
+				//- sum = sum + val.cought;
+			if val.bought > 0
+				p #{val.firm} has bought #{val.bought} kg of fish from #{val.supplier}.
+				//- sum = sum + val.bought;
+			if val.sold > 0
+				p #{val.firm} has sold #{val.sold} kg of fish to #{val.buyer}.
+				//- sum = sum - val.sold;
+			//p #{val.firm} has #{sum} kg of fish left.
+
+		h2 Summary:
+		
+		- var sum = 0;
+		each val in arr 
+			if val.firm == '"Firma A"' && val.caught > 0
+				- sum += Number(val.caught)
+			if val.firm === '"Firma A"' && val.bought > 0
+				- sum += Number(val.caught)
+			if val.firm === '"Firma A"' && val.sold > 0
+				- sum -= Number(val.sold)
+		p "Firma A" has #{sum} kg of fish left after sales.
+
+		- var sum2 = 0
+		each val in arr 
+			if val.firm == '"Firma B"' && val.caught > 0
+				- sum += Number(val.caught)
+			if val.firm === '"Firma B"' && val.bought > 0
+				- sum += Number(val.caught)
+			if val.firm === '"Firma B"' && val.sold > 0
+				- sum -= Number(val.sold)
+		p "Firma B" has #{sum2} kg of fish left after sales.
